@@ -1,0 +1,57 @@
+<h1>Shopping Cart</h1>
+
+<div class="row">
+    <div class="offset-md-1 col-md-10">
+        <ng-container  *ngIf="cart$ | async as cart">
+            <p>
+                You have {{ cart.totalItemsCount }} items in your Shopping cart.
+                <button 
+                    *ngIf="cart.items.length"
+                    (click)="clearCart()"
+                    class="btn btn-light btn-sm">
+                    Clear Shopping Cart
+                </button>
+            </p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Product</th>
+                        <th style="width: 400px" class="text-center">Quantity</th>
+                        <th style="width: 200px"class="text-end">Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of cart.items">
+                        <td *ngIf="item.quantity != 0">
+                            <div [style.backgroundImage]="'url(' + item.imageUrl + ')'" class="thumbnail"></div>
+                        </td>
+                        <td *ngIf="item.quantity != 0">
+                            {{ item.title }}
+                        </td>
+                        <td *ngIf="item.quantity != 0" >
+                            <product-quantity [product]="item" [shopping-cart]="cart"></product-quantity>
+                        </td>
+                        <td *ngIf="item.quantity != 0" class="text-end">
+                            {{ item.totalPrice | currency:"USD" }}
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th class="text-end">{{ cart.totalItemsPrice | currency:"USD" }}</th>
+                    </tr>
+                </tfoot>
+            </table>
+            <a
+                *ngIf="cart.items.length"
+                routerLink="/check-out"
+                class="btn btn-primary"
+            >Check Out</a>
+        </ng-container>
+    </div>
+   
+</div>
